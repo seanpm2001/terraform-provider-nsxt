@@ -32,6 +32,7 @@ const vlanTransportZoneName string = "transportzone2"
 const overlayTransportZoneNamePrefix string = "1-transportzone"
 const macPoolDefaultName string = "DefaultMacPool"
 const defaultEnforcementPoint string = "default"
+const defaultProjectName string = "Test_project"
 
 const realizationResourceName string = "data.nsxt_policy_realization_info.realization_info"
 const defaultTestResourceName string = "terraform-acctest"
@@ -97,6 +98,14 @@ func getTier0RouterName() string {
 	return name
 }
 
+func getProjectName() string {
+	name := os.Getenv("NSXT_PROJECT_ID")
+	if name == "" {
+		name = defaultProjectName
+	}
+	return name
+}
+
 func getTier0RouterPath(connector client.Connector) string {
 	// Retrieve Tier0 path
 	routerName := getTier0RouterName()
@@ -136,6 +145,10 @@ func getMacPoolName() string {
 		name = macPoolDefaultName
 	}
 	return name
+}
+
+func getIpBlockName() string {
+	return os.Getenv("NSXT_TEST_IP_BLOCK")
 }
 
 func getIPPoolName() string {
