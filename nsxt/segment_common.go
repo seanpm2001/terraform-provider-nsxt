@@ -683,7 +683,7 @@ func nsxtPolicySegmentAddGatewayToInfraStruct(d *schema.ResourceData, dataValue 
 	return dataValue1.(*data.StructValue), nil
 }
 
-func policySegmentResourceToInfraStruct(context utl.SessionContext, id string, d *schema.ResourceData, isVlan bool, isFixed bool) (model.Infra, error) {
+func policySegmentResourceToInfraStruct(context utl.SessionContext, id string, d *schema.ResourceData, isVlan bool, isFixed bool, isVMC bool) (model.Infra, error) {
 	// Read the rest of the configured parameters
 	var infraChildren []*data.StructValue
 
@@ -697,7 +697,7 @@ func policySegmentResourceToInfraStruct(context utl.SessionContext, id string, d
 	revision := int64(d.Get("revision").(int))
 	resourceType := "Segment"
 
-	if (tzPath == "") && context.ClientType == utl.Local && !isFixed {
+	if (tzPath == "") && context.ClientType == utl.Local && !isFixed && !isVMC {
 		return model.Infra{}, fmt.Errorf("transport_zone_path needs to be specified for infra segment on local manager")
 	}
 
@@ -1444,7 +1444,8 @@ func nsxtPolicySegmentCreate(d *schema.ResourceData, m interface{}, isVlan bool,
 		return err
 	}
 
-	obj, err := policySegmentResourceToInfraStruct(getSessionContext(d, m), id, d, isVlan, isFixed)
+	isVMC := getCommonProviderConfig(m.(nsxtClients)).IsVMC
+	obj, err := policySegmentResourceToInfraStruct(getSessionContext(d, m), id, d, isVlan, isFixed, isVMC)
 	if err != nil {
 		return err
 	}
@@ -1467,7 +1468,8 @@ func nsxtPolicySegmentUpdate(d *schema.ResourceData, m interface{}, isVlan bool,
 		return fmt.Errorf("Error obtaining Segment ID")
 	}
 
-	obj, err := policySegmentResourceToInfraStruct(getSessionContext(d, m), id, d, isVlan, isFixed)
+	isVMC := getCommonProviderConfig(m.(nsxtClients)).IsVMC
+	obj, err := policySegmentResourceToInfraStruct(getSessionContext(d, m), id, d, isVlan, isFixed, isVMC)
 	if err != nil {
 		return err
 	}

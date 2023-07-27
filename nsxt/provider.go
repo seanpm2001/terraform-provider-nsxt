@@ -39,6 +39,7 @@ type commonProviderConfig struct {
 	MinRetryInterval       int
 	MaxRetryInterval       int
 	RetryStatusCodes       []int
+	IsVMC                  bool
 }
 
 type nsxtClients struct {
@@ -783,13 +784,23 @@ func initCommonConfig(d *schema.ResourceData) commonProviderConfig {
 
 	statuses := d.Get("retry_on_status_codes").([]interface{})
 	retryStatuses := make([]int, 0, len(statuses))
+	vmcToken := d.Get("vmc_token").(string)
+	vmcAuthMode := d.Get("vmc_auth_mode").(string)
+	isVMC := false
 	for _, s := range statuses {
+
 		retryStatuses = append(retryStatuses, s.(int))
 	}
 
 	if len(retryStatuses) == 0 {
 		// Set to the defaults if empty
 		retryStatuses = append(retryStatuses, defaultRetryOnStatusCodes...)
+	}
+
+	if (len(vmcToken) > 0) || (vmcAuthMode == "Basic") {
+		// VMC can operate without token with basic auth, however MP API is not
+		// available for cloud admin user
+		isVMC = true
 	}
 
 	return commonProviderConfig{
@@ -799,6 +810,7 @@ func initCommonConfig(d *schema.ResourceData) commonProviderConfig {
 		MinRetryInterval:       retryMinDelay,
 		MaxRetryInterval:       retryMaxDelay,
 		RetryStatusCodes:       retryStatuses,
+		IsVMC:                  isVMC,
 	}
 }
 
