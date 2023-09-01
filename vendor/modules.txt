@@ -316,6 +316,7 @@ github.com/vmware/vsphere-automation-sdk-go/services/nsxt-mp/nsx
 github.com/vmware/vsphere-automation-sdk-go/services/nsxt-mp/nsx/fabric
 github.com/vmware/vsphere-automation-sdk-go/services/nsxt-mp/nsx/model
 github.com/vmware/vsphere-automation-sdk-go/services/nsxt-mp/nsx/node
+github.com/vmware/vsphere-automation-sdk-go/services/nsxt-mp/nsx/transport_nodes
 # github.com/zclconf/go-cty v1.10.0
 ## explicit; go 1.12
 github.com/zclconf/go-cty/cty
@@ -337,6 +338,7 @@ golang.org/x/crypto/openpgp/s2k
 # golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1
 ## explicit; go 1.20
 golang.org/x/exp/constraints
+golang.org/x/exp/maps
 golang.org/x/exp/slices
 # golang.org/x/net v0.7.0
 ## explicit; go 1.17
