@@ -41,6 +41,11 @@ The following arguments are supported:
   * `password` - (Required) The password for login to the node.
   * `fqdn`  - (Computed) Fqdn of the node.
   * `status` - (Computed) Status of the node, value will be one of `JOINING`, `JOINED`, `REMOVING` and `REMOVED`.
+* `api_probing` - (Optional) Parameters for probing NSX API endpoint connection. Since NSX nodes might have been created during same apply, we might need to wait until the API endpoint becomes available and all required default objects are created.
+  * `enabled` - (Optional) Whether API connectivity check is enabled. Default is `true`.
+  * `delay` - (Optional) Initial delay before we start probing API endpoint in seconds. Default is 0.
+  * `interval` - (Optional) Interval for probing API endpoint in seconds. Default is 10.
+  * `timeout` - (Optional) Timeout for probing the API endpoint in seconds. Default is 1800.
 
 ## Importing
 
